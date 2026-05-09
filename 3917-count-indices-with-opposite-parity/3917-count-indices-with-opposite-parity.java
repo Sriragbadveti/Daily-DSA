@@ -1,35 +1,20 @@
 class Solution {
     public int[] countOppositeParity(int[] arr) {
         int n = arr.length;
+        int oddCount  = 0;
+        int evenCount  = 0;
         int res[] = new int[n];
-        boolean isEven = false;
-        
-        for(int i = 0 ; i<n ; i++){
-            int count = 0;
-            if(arr[i] %2==0){
-                isEven = true;
+
+        for(int i = n-1; i>=0 ; i--){
+            if(arr[i]%2==0){
+                res[i] = oddCount;
+                evenCount++;
             }else{
-                isEven = false;
-
-            }
-
-            for(int j = i+1 ; j<n; j++){
-                
-                if(isEven){
-                    if(arr[i] != arr[j] && arr[j]%2 == 1){
-                        count++;
-                    }
-                }else{
-                    if(arr[i]!=arr[j] && arr[j]%2 == 0){
-                        count++;
-                    }
-                }
-
-                res[i] = count;
-
-                
+                res[i] = evenCount;
+                oddCount++;
             }
         }
         return res;
+        
     }
 }
