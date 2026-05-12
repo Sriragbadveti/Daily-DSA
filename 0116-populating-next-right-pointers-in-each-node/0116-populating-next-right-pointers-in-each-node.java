@@ -24,33 +24,27 @@ class Node {
 class Solution {
     public Node connect(Node root) {
         
-        Queue<Node> queue = new LinkedList<>();
-        queue.offer(root);
-        if(root == null){
-            return root;
-        }
-        while(!queue.isEmpty()){
-            int levelSize = queue.size();
-            for(int i = 0 ; i<levelSize ;i ++) {
+        //this is going to be the advanced way of solving this problem in constant time space, without using a queue
 
-                Node curr = queue.poll();
+        if(root == null) return null;
+        Node leftMost = root;
 
-                if(i!=levelSize-1){
-                    curr.next = queue.peek();
+        while(leftMost.left != null){
 
-                }else{
-                    curr.next = null;
+            Node curr = leftMost;
+            while(curr != null){
+                curr.left.next = curr.right;
+
+                if(curr.next != null){
+                    curr.right.next = curr.next.left;
                 }
 
-                if(curr.left != null){
-                    queue.offer(curr.left);
-                }
-
-                if(curr.right != null){
-                    queue.offer(curr.right);
-                }
+                curr = curr.next;
             }
-            
+
+            leftMost = leftMost.left;
+
+
         }
         return root;
     }
