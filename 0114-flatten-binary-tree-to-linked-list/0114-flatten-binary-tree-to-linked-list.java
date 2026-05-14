@@ -16,7 +16,7 @@
 class Solution {
     public void flatten(TreeNode root) {
         
-
+        //this is the most optimal solution in 0(1) space -> find the empty space in left hand side of the current's right hand side and then cut and paste and shift this is what entirely you have to be doing...
         TreeNode curr = root;
         while(curr!=null){
             if(curr.left!=null){
