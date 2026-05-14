@@ -14,27 +14,21 @@
  * }
  */
 class Solution {
-    Queue<TreeNode> queue  = new LinkedList<>();
     public void flatten(TreeNode root) {
-        //Solving in the most brute force solution using a queue
+        
 
-        if(root == null) return ;
-        traversal(root);
-
-        TreeNode curr = queue.poll();
-        while(!queue.isEmpty()){
-            curr.left = null;
-            curr.right = queue.poll();
+        TreeNode curr = root;
+        while(curr!=null){
+            if(curr.left!=null){
+                TreeNode temp = curr.left;
+                while(temp.right!=null){
+                    temp = temp.right;
+                }
+                temp.right = curr.right;
+                curr.right = curr.left;
+                curr.left = null;
+            }
             curr = curr.right;
         }
-    }
-
-    public void traversal(TreeNode root){
-
-        if(root == null) return ;
-        queue.offer(root);
-
-        traversal(root.left);
-        traversal(root.right);
     }
 }
