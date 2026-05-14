@@ -17,18 +17,14 @@ class Solution {
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         Queue<TreeNode> queue = new LinkedList<>();
-
         queue.offer(root);
-        if(root == null){
-            return result;
-        }
+        if(root==null)return result;
 
         while(!queue.isEmpty()){
 
             int levelSize = queue.size();
-            for(int i = 0 ; i<levelSize ;i++){
-                TreeNode curr = queue.poll();
-                //do something if the last element
+            for(int i = 0 ; i<levelSize ; i++){
+                TreeNode curr = queue.poll(); 
                 if(i == levelSize-1){
                     result.add(curr.val);
                 }
@@ -37,12 +33,13 @@ class Solution {
                     queue.offer(curr.left);
                 }
 
-                if(curr.right!=null){
+                if(curr.right != null){
                     queue.offer(curr.right);
                 }
             }
         }
-
         return result;
+
+
     }
 }
