@@ -1,59 +1,57 @@
 class Solution {
-    public int countKthRoots(int l, int r, int k) {
 
-        //okay to solve this particular question we ll be implementing 2 binary searches to find the lowest valid nuimber and the highest valid number and their difference would be the answer;
+    boolean possible(long mid, int k, long n) {
+        
+        // handle 0 separately
+        if(mid == 0)
+            return true;
 
-        //binary search->1 to find the largest valid element
+        long ans = 1;
 
-        int start = 0;
-        int end = r;
-        int ans1 = -1;
-        int ans2 = -1;
-        int res = 0;
+        for(int i = 0; i < k; i++) {
+            // avoid overflow
+            if(ans > n / mid)
+                return false;
 
-        while (start <= end) {
-
-            int mid = (start + end) / 2;
-
-            double cube = Math.pow(mid, k);
-
-            if (cube >= l && cube <= r) {
-                ans1 = mid;
-                start = mid + 1;
-            } else if (cube < l) {
-                start = mid + 1;
-            } else {
-                end = mid - 1;
-            }
-
+            ans *= mid;
         }
 
-        //binary search -> 2 for finding the smallest valid number 
-
-        start = 0;
-        end = r;
-
-        while (start <= end) {
-
-            int mid = (start + end) / 2;
-            double cube = Math.pow(mid, k);
-            if (cube >= l && cube <= r) {
-                ans2 = mid;
-                end = mid - 1;
-            } else if (cube < l) {
-                start = mid + 1;
-            } else {
-                end = mid - 1;
-            }
-        }
-
-        //now find the final answer
-        if (ans1 == -1 || ans2 == -1) {
-            return 0;
-        }
-        res = ans1 - ans2 + 1;
-        return res;
-
+        return ans <= n;
     }
 
+    // floor(n^(1/k))
+    long kthRoot(long n, int k) {
+
+        long low = 0;
+        long high = n;
+
+        long ans = 0;
+
+        while(low <= high) {
+
+            long mid = low + (high - low) / 2;
+
+            if(possible(mid, k, n)) {
+                ans = mid;
+                low = mid + 1;
+            }
+            else {
+                high = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+    public int countKthRoots(int l, int r, int k) {
+        long right = kthRoot(r, k);
+        long left = kthRoot((long)l - 1, k);
+
+        long ans = right - left;
+        // include 0
+        if(l == 0)
+            ans++;
+
+        return (int)ans;
+    }
 }
