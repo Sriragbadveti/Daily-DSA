@@ -20,7 +20,7 @@ class Solution {
         if(row==n)return Math.abs(currSum-target);
         if(dp[row][currSum] != -1)return dp[row][currSum];
 
-        //now check for eveery element in row one
+        //now check for every element in row one
         int ans = Integer.MAX_VALUE;
         for(int col = 0 ; col<m ; col++){
 
