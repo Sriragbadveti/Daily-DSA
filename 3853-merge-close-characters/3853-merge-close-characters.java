@@ -1,0 +1,35 @@
+class Solution {
+    public String mergeCharacters(String s, int k) {
+        StringBuilder sb = new StringBuilder(s);
+       
+
+        while(true) {
+
+
+            boolean merged = false;
+            //find the smallest left index
+            for(int i = 0 ; i<sb.length() ; i++){
+
+                //find the smallest right index for the left index
+                for(int j = i+1 ; j<sb.length() ;j++){
+
+                    if(sb.charAt(i) == sb.charAt(j) && j-i<=k){
+                        sb.deleteCharAt(j);
+                        merged = true;
+                        break;
+                    }
+
+                }
+
+                if(merged) {
+                    break;
+                }
+            }
+
+            if(!merged)break;
+
+            
+        }
+        return sb.toString();
+    }
+}
