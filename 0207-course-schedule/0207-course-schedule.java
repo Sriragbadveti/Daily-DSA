@@ -1,70 +1,61 @@
-class Solution {
 
-    public boolean canFinish(int numCourses, int[][] arr) {
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
 
         int n = numCourses;
 
-        // Build adjacency list
+        // 1. Build adjacency list
         ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             graph.add(new ArrayList<>());
         }
 
-        // Add directed edges
-        for (int[] edge : arr) {
-
+        // prerequisite -> course
+        for (int[] edge : prerequisites) {
             int course = edge[0];
             int pre = edge[1];
 
             graph.get(pre).add(course);
         }
 
-        // Visited arrays
-        boolean[] visited = new boolean[n];
-        boolean[] path = new boolean[n];
+        // 2. Calculate indegree
+        int[] indegree = new int[n];
 
-        // Check every component
         for (int i = 0; i < n; i++) {
+            for (int neighbour : graph.get(i)) {
+                indegree[neighbour]++;
+            }
+        }
 
-            if (!visited[i]) {
+        // 3. Add all nodes with indegree 0
+        Queue<Integer> queue = new LinkedList<>();
 
-                if (dfs(i, visited, path, graph)) {
-                    return false;
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                queue.add(i);
+            }
+        }
+
+        // 4. Process nodes using BFS
+        int count = 0;
+
+        while (!queue.isEmpty()) {
+
+            int node = queue.poll();
+            count++;
+
+            for (int neighbour : graph.get(node)) {
+
+                indegree[neighbour]--;
+
+                if (indegree[neighbour] == 0) {
+                    queue.add(neighbour);
                 }
             }
         }
 
-        return true;
-    }
-
-    public boolean dfs(
-        int u,
-        boolean[] visited,
-        boolean[] path,
-        ArrayList<ArrayList<Integer>> graph
-    ) {
-
-        visited[u] = true;
-        path[u] = true;
-
-        for (int node : graph.get(u)) {
-
-            if (!visited[node]) {
-
-                if (dfs(node, visited, path, graph)) {
-                    return true;
-                }
-
-            } else if (path[node]) {
-
-                return true;
-            }
-        }
-
-        // Backtracking
-        path[u] = false;
-
-        return false;
+        // 5. Check whether all courses were processed
+        return count == n;
     }
 }
